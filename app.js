@@ -9,11 +9,19 @@ const connection = mysql.createConnection({
     database : 'join_us'
 });
 
-const q = 'SELECT CURTIME() as time, CURDATE() as date, NOW() as now';
+let data = [];
+for(let i = 0; i < 500; i++) {
+    data.push([
+        faker.internet.email(),
+        faker.date.past()
+            ]);
+}
 
-connection.query(q, function (error, results, fields) {
+const q = 'INSERT INTO users (email, created_at) VALUES ?'
+
+connection.query(q, [data], function (error, result) {
     if (error) throw error;
-    console.log(results);
+    console.log(result);
 });
 
 connection.end();
